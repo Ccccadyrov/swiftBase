@@ -404,4 +404,123 @@ animate(duration1: 3) {
     print("image2")
 }//если клоужр идет последним параметром - то можно сделать так
 //клоужер принимает параметры и сам является параметром (читать далее)
+//перечисления enum определяют общий тип для группы значений что бы их было проще использовать имеют любой тип данных (это типы первого класса)
+let results11 = "failure"
+let results2 = "failes"
+let results3 = "fail"
+enum Result11 {
+    case success
+    case failure
+}
+//case success, failure
 
+var result4 = Result11.failure
+result4 = .success //поменяли значение
+
+let result5: Result11
+result5 = .success
+
+
+enum activity {
+    case dancing
+    case running(destination:String)
+    case talking(topic:String)
+    case singing(volume:Int)
+}
+let currentActivity = activity.dancing
+switch currentActivity {
+case .dancing: print("танцует")
+case .running: print("бежит")
+case .singing: print("поет")
+case.talking: print("говорит")
+}
+
+let talking = activity.talking(topic: "football")
+
+enum Planet: Int {
+    case mercury = 1
+    case venus
+    case earth
+    case mars
+}
+
+//чистые значения перечислений, свифт присвоит значения перечислений с нуля (автоматически)
+let earth = Planet(rawValue: 2)
+//получили землю по значению роу велью, потом задали собственную нумерацию (=1) и нумерация пошла не с нуля, теперь venus это все работает только для перечислений с типом Int
+
+enum Phone: String {
+    case Apple = "iPhone8"
+    case Samsung = "Galaxy s10"
+    case Google = "Pixel 2"
+}//создали енам с типом стринг, далее доберем до роу велью
+var myPhone = Phone.Apple
+print (myPhone)
+print (myPhone.rawValue)
+//но если мы уберем роу велью - то будет строка с названием кейса
+//Классы (Свифт ООП, позволяет представить программу как набор объектов)
+/*
+ класс является описанием объекта а объект является экземпляром данного класса
+ все переменные или константы внутри класса называются свойствами класса
+ функции внутри класса называются методы
+ */
+class Human {
+    var age = 25
+    var name = "Maria"
+    func move () {
+        print ("\(name) is moving")
+    }
+} //создали класс, далее создадим экземпляр класса Human
+var maria = Human()
+maria.age
+maria.move()
+//инициализация подразумевает подготовку класса или структуры к использованию этот процесс подразумевает начальную установку значений для свойств класса
+//свойства класса должны иметь значения к моменту создания экземплра класса
+class Human2 {
+    var age:Int
+    var name:String
+    var status:String {
+        if isQualified {
+            return "\(name) is qualified"
+        } else {
+            return "\(name) is not qualified"
+        }
+    }//вычисляемое свойство, в фигурных скобках код
+    var isQualified:Bool
+    func move () {
+        print ("\(name) is moving")
+    }
+    init(age:Int,name:String, isQualified:Bool){
+        self.age = age
+        self.name = name
+        self.isQualified = isQualified
+    }
+}
+var maria2 = Human2(age: 25, name: "Masha", isQualified: true)
+//в примере выше мы инициализировали класс без заданных начальных значений
+//свойства класса - хранимые (stored properties) и вычисляемые (computed properties)  в примере выше имя и возраст это хранимые свойства а статус - вычисляемое
+maria2.status
+//вычисляемые свойства не хранят значение
+//пример вычисляемого свойства использующий геттер и сеттер
+//программа вычисляет прибыль при вложении определенной суммы на определенный период в банке (условно)
+
+class Account {
+    var sum:Double = 0 //сумма вклада
+    var rate:Double = 0.01//процентная ставка
+    
+    var profit: Double {
+        get {return sum+sum*rate}
+        set(newProfit) {self.sum=newProfit/(1+rate)}
+    }
+    
+    init(sum:Double, rate:Double) {
+        self.sum=sum
+        self.rate=rate
+    }
+}
+var myAcc: Account = Account(sum: 1000, rate: 0.1)
+print (myAcc.profit)
+//ожидаемая прибыль, ниже рассмотрим логику действий для того что бы узнать какую сумму нужно вложить для заданной прибыли
+//свойство сет сработает когда мы переназначим значение (В нашем случае профит)
+myAcc.profit = 2000
+print(myAcc.sum) //получили необходимую сумму вклада для получения прибыли 2000
+//посмотреть заново, обратить внимание на гетеры сетеры
