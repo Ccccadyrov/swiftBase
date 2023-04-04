@@ -524,3 +524,141 @@ print (myAcc.profit)
 myAcc.profit = 2000
 print(myAcc.sum) //получили необходимую сумму вклада для получения прибыли 2000
 //посмотреть заново, обратить внимание на гетеры сетеры
+//далее структуры
+
+class HumanNew {
+    var age:Int
+    var name:String
+    
+    init (age: Int, name: String) {
+        self.age = age
+        self.name = name
+    }
+}
+
+var humanNew = HumanNew(age: 20, name: "Pavel")
+humanNew.age
+
+struct HumanNew1 {
+    var age:Int
+    var name:String
+}
+
+var humanNew1 = HumanNew1(age: 25, name: "Viktor") //структуре не нужно прописывать инициализатор
+humanNew1.age
+humanNew1.age=35
+humanNew1.age
+//value type - Int String Bool struct array and more
+//reference type - enum, class
+var humanNew2 = HumanNew1(age: 30, name: "Olga")
+humanNew2.age
+humanNew2.name
+humanNew2=humanNew1
+humanNew2.age
+humanNew2.name
+humanNew2.age = 45
+humanNew2.name = "Petr"
+humanNew2.age
+humanNew2.name
+humanNew1.age
+humanNew1.name
+//приосходит копирование значений без ссылок, с классами такой трюк не пройдет и оба значения будут одинаковыми ссылаясь друг на друга
+//работая внутри класса мы можем менять свойства с помощью метода, работая со структурой - перед методом необходимо указывать mutating - изменяющийся, пример ниже
+
+struct Person11 {
+    var name: String
+    
+    mutating func makeAnonymous () {
+        name = "Anonumous"
+    }
+}
+
+let string = "do or do not, there is no try" //строка это так-же структура внутри свифта у нее свои методы (почему эта инфа только сейчас?)
+string.count
+string.hasPrefix("do")
+string.uppercased()
+string.sorted()
+//свойства типов
+//создали по классу и структуре ниже
+class Dog {
+    var name: String
+    var age: Int {
+        didSet {
+            if age>maxAge {
+                age = oldValue
+            }
+        }//добавили наблюдатель свойств на случай если пользователь укажет возраст более 30
+    }
+    var maxAge = 30
+    
+    init(name:String, age: Int) {
+        self.name = name
+        self.age = age
+    }
+}
+
+struct Cat {
+    var name: String
+    var age: Int {
+        didSet {
+            if age>maxAge {
+                age = oldValue
+            }
+        }//добавили наблюдатель свойств на случай если пользователь укажет возраст более 30
+    }
+    var maxAge = 30
+}
+
+var dog = Dog(name: "Bobick", age: 5)
+var cat = Cat(name: "Pushock", age: 3,maxAge: 30)
+dog.age
+dog.age=35
+dog.age
+//наблюдатель свойств проверяет новй возраст и не дает установить более тридцати в случае с классом
+cat.age
+cat.age=100
+cat.age
+//наблюдатель так-же работает но если будет большое количество экземпляров свойство максЭйдж будет храниться для каждого, поэтому применяем свойства типов static
+//ниже реализация того-же кода со свойством статик
+
+
+class Dog1 {
+    var name: String
+    var age: Int {
+        didSet {
+            if age>Dog1.maxAge {
+                age = oldValue
+            }
+        }
+    }
+    static var maxAge = 30
+    static var howManyDogs = 0
+    
+    init(name:String, age: Int) {
+        self.name = name
+        self.age = age
+        Dog1.howManyDogs+=1
+    }
+}
+
+struct Cat1 {
+    var name: String
+    var age: Int {
+        didSet {
+            if age>Cat1.maxAge {
+                age = oldValue
+            }
+        }
+    }
+    static var maxAge = 30
+    static var howManyCats = 0
+    init(name:String, age: Int) {
+        self.name = name
+        self.age = age
+        Cat1.howManyCats+=1 //создали кастомный инициализатор который будет работать как счетчик, но для этого пришлось инициализировать и дефолтные параметры
+    }
+}
+
+Cat1.howManyCats //не было создано ни одного экземпляра структуры кот1
+var kitty = Cat1(name: "kotek", age: 3)//создали экземпляр структуры кот1
+Cat1.howManyCats//был создан один экземпляр структуры кот1
