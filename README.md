@@ -1,1 +1,2 @@
 # swiftBase
+just basic syntax
